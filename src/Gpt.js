@@ -1,16 +1,5 @@
 import OpenAI from "openai";
 
-const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-const organization = import.meta.env.VITE_OPENAI_ORGANIZATION;
-const project = import.meta.env.VITE_OPENAI_PROJECT;
-
-const openai = new OpenAI({
-    apiKey: apiKey,
-    organization: organization,
-    project: project,
-    dangerouslyAllowBrowser: true
-});
-
 const getPrompt = (question, content) => {
     return `Task:Generate Answer for question provided based on content. Format your response in GitHub-favored markdown.
 Content:
@@ -21,7 +10,17 @@ ${question}"
 `;
 };
 
-const getGPTAnswer = async (question, content) => {
+const createOpenAIClient = (apiKey) => {
+    return new OpenAI({
+        apiKey: apiKey,
+        // organization: organization,
+        // project: project,
+        dangerouslyAllowBrowser: true
+    });
+
+}
+
+const getGPTAnswer = async (openai, question, content) => {
     const prompt = getPrompt(question, content);
     console.log("Prompt is", prompt);
     try {
@@ -36,4 +35,4 @@ const getGPTAnswer = async (question, content) => {
     }
 }
 
-export default getGPTAnswer;
+export {createOpenAIClient, getGPTAnswer};

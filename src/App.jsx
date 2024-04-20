@@ -1,12 +1,19 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button, FileInput, Stack, TextInput} from '@mantine/core';
 import './App.css';
 import pdfToText from 'react-pdftotext';
-import getGPTAnswer from "./Gpt.js";
+import {createOpenAIClient, getGPTAnswer} from "./Gpt.js";
 import Markdown from "react-markdown";
 
 
 function App() {
+    const [apiKey, setApiKey] = useState(''); // State to store the API key
+    const [openAI, setOpenAI] = useState(null); // State to store the OpenAI client
+    useEffect(() => {
+        if (apiKey) {
+            setOpenAI(createOpenAIClient(apiKey));
+        }
+    }, [apiKey]);
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -34,9 +41,7 @@ function App() {
 
         setIsLoading(true);
         try {
-            const response = await getGPTAnswer(question, pdfText);
-            console.log("====================================");
-            console.log("Response is", response);
+            const response = await getGPTAnswer(openAI, question, pdfText);
             setAnswer(response);
         } catch (error) {
             setAnswer('There was an error processing your question.');
@@ -48,6 +53,15 @@ function App() {
     return (
         <Stack>
             <h1>PDF Parser</h1>
+            <TextInput
+                type="text"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                description="The OpenAI API key is used to generate queries from questions using GPT-3.5.
+            It can be obtained from 'https://platform.openai.com/'. The API key is only stored in your browser."
+                placeholder="enter your OpenAI Api key here"
+            />
+
             <FileInput
                 variant="filled"
                 size="lg"
