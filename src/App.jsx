@@ -1,22 +1,9 @@
-import { useState } from 'react';
-import {createTheme, FileInput, MantineProvider} from '@mantine/core';
+import {useState} from 'react';
+import {Button, FileInput, Stack, TextInput} from '@mantine/core';
 import './App.css';
 import pdfToText from 'react-pdftotext';
 import getGPTAnswer from "./Gpt.js";
-import { Button } from '@mantine/core';
-
-function Demo() {
-    return (
-        <FileInput
-            variant="filled"
-            size="lg"
-            radius="xl"
-            label="Input label"
-            description="Input description"
-            placeholder="Input placeholder"
-        />
-    );
-}
+import Markdown from "react-markdown";
 
 
 function App() {
@@ -25,8 +12,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [pdfText, setPdfText] = useState(''); // State to store extracted text from PDF
 
-    const extractText = (event) => {
-        const file = event.target.files[0];
+    const extractText = (file) => {
         setIsLoading(true);
         pdfToText(file)
             .then(text => {
@@ -60,8 +46,8 @@ function App() {
     };
 
     return (
-        <MantineProvider>
-            {/* The rest of your app */}
+        <Stack>
+            <h1>PDF Parser</h1>
             <FileInput
                 variant="filled"
                 size="lg"
@@ -69,23 +55,21 @@ function App() {
                 label="Upload your PDF"
                 placeholder="Drag your PDF here or click to upload"
                 accept=".pdf"
-                onChange={(event) => handleFileChange(event.currentTarget.files[0])}
+                onChange={(file) => extractText(file)}
                 disabled={isLoading}
             />
 
-            <div className="chat-interface">
-                <input
-                    type="text"
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="Ask a question about the PDF"
-                />
-                <Button onClick={askQuestion} disabled={isLoading}>
-                    Ask
-                </Button>
-                <p>Answer: {isLoading ? 'Loading...' : answer}</p>
-            </div>
-        </MantineProvider>
+            <TextInput
+                type="text"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="Ask a question about the PDF"
+            />
+            <Button onClick={askQuestion} disabled={isLoading}>
+                Ask
+            </Button>
+            <Markdown>{isLoading ? 'Loading...' : answer}</Markdown>
+        </Stack>
     );
 }
 

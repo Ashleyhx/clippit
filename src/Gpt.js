@@ -8,10 +8,11 @@ const openai = new OpenAI({
     apiKey: apiKey,
     organization: organization,
     project: project,
-    dangerouslyAllowBrowser: true });
+    dangerouslyAllowBrowser: true
+});
 
 const getPrompt = (question, content) => {
-    return `Task:Generate Answer for question provided based on content.
+    return `Task:Generate Answer for question provided based on content. Format your response in GitHub-favored markdown.
 Content:
 ${JSON.stringify(content)}
 
@@ -26,7 +27,7 @@ const getGPTAnswer = async (question, content) => {
     try {
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: prompt }],
+            messages: [{role: "user", content: prompt}],
         });
         console.log("Response is", response);
         return response.choices[0].message.content;
