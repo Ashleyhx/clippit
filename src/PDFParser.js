@@ -8,7 +8,6 @@ function extractText(event) {
 }
 
 function PDFParserReact() {
-
     return (
         <div className="App">
             <header className="App-header">

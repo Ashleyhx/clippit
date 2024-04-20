@@ -1,8 +1,23 @@
 import { useState } from 'react';
+import {createTheme, FileInput, MantineProvider} from '@mantine/core';
 import './App.css';
-import axios from 'axios';
 import pdfToText from 'react-pdftotext';
 import getGPTAnswer from "./Gpt.js";
+import { Button } from '@mantine/core';
+
+function Demo() {
+    return (
+        <FileInput
+            variant="filled"
+            size="lg"
+            radius="xl"
+            label="Input label"
+            description="Input description"
+            placeholder="Input placeholder"
+        />
+    );
+}
+
 
 function App() {
     const [question, setQuestion] = useState('');
@@ -45,11 +60,18 @@ function App() {
     };
 
     return (
-        <>
-            <div>
-                <input type="file" accept="application/pdf" onChange={extractText}/>
-                {isLoading && <p>Loading PDF...</p>}
-            </div>
+        <MantineProvider>
+            {/* The rest of your app */}
+            <FileInput
+                variant="filled"
+                size="lg"
+                radius="xl"
+                label="Upload your PDF"
+                placeholder="Drag your PDF here or click to upload"
+                accept=".pdf"
+                onChange={(event) => handleFileChange(event.currentTarget.files[0])}
+                disabled={isLoading}
+            />
 
             <div className="chat-interface">
                 <input
@@ -58,13 +80,12 @@ function App() {
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="Ask a question about the PDF"
                 />
-                <button onClick={askQuestion} disabled={isLoading}>
+                <Button onClick={askQuestion} disabled={isLoading}>
                     Ask
-                </button>
+                </Button>
                 <p>Answer: {isLoading ? 'Loading...' : answer}</p>
             </div>
-
-        </>
+        </MantineProvider>
     );
 }
 

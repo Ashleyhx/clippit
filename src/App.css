@@ -11,9 +11,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -39,4 +41,62 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Styles for the button */
+button {
+  width: 100%;
+  padding: 1em;
+  margin-top: 1em;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 300ms ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Styles for the input field */
+input[type="text"] {
+  width: calc(100% - 20px); /* Full width minus padding */
+  padding: 0.5em;
+  margin: 1em 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Additional styles for file input if needed */
+input[type="file"] {
+  padding: 0.5em 1em;
+  margin: 1em 0;
+}
+
+/* Loading text style */
+.loading-pdf {
+  color: #007bff;
+}
+
+/* Chat interface styles */
+.chat-interface {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  padding: 2em;
+  margin: 1em 0;
+  border-radius: 5px;
+  width: 800px; /* Set a fixed width or use a percentage */
+}
+
+/* Answer text style */
+.answer {
+  color: #333;
+  margin-top: 1em;
 }

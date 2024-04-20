@@ -11,14 +11,13 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true });
 
 const getPrompt = (question, content) => {
-    const prompt = `Task:Generate Answer for question provided based on content.
+    return `Task:Generate Answer for question provided based on content.
 Content:
 ${JSON.stringify(content)}
 
 The question is:
 ${question}"
 `;
-    return prompt;
 };
 
 const getGPTAnswer = async (question, content) => {
