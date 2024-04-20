@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import axios from 'axios';
 import pdfToText from 'react-pdftotext';
+import getGPTAnswer from "./Gpt.js";
 
 function App() {
     const [question, setQuestion] = useState('');
@@ -32,8 +33,10 @@ function App() {
 
         setIsLoading(true);
         try {
-            const response = await axios.post('/api/ask', { question, documentText: pdfText });
-            setAnswer(response.data.answer);
+            const response = await getGPTAnswer(question, pdfText);
+            console.log("====================================");
+            console.log("Response is", response);
+            setAnswer(response);
         } catch (error) {
             setAnswer('There was an error processing your question.');
             console.error('Error asking question:', error);
